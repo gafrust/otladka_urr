@@ -1,5 +1,4 @@
-#!/bin/bash
-set -e # Останавливаем скрипт при любой ошибке
+==#!/bin/bash
 
 BUILD_DIR="build"
 
@@ -8,14 +7,25 @@ rm -rf $BUILD_DIR
 mkdir -p $BUILD_DIR
 cd $BUILD_DIR
 
-# 2. Воссоздаем проект. 
-# ВАЖНО: Флаг --origin_dir .. указывает скрипту, что исходники (.srcs) 
-# лежат на уровень выше (в корне репозитория), а не по абсолютному пути.
+# 2. Воссоздаем проект.
 echo "=== Воссоздание проекта ==="
-vivado -mode batch -source ../recreate_project.tcl -tclargs --origin_dir .. -notrace
+# ИСПРАВЛЕНИЕ: флаг -notrace перенесен ВПЕРЕД -source и -tclargs
+vivado -mode batch -notrace -source ../recreate_project.tcl -tclargs --origin_dir ..
+
+# Проверяем, создался ли проект (так как Vivado может вернуть 0 при ошибке Tcl)
+if [ ! -f "otladka_urr/otladka_urr.xpr" ]; then
+    echo "ОШИБКА: Проект не был создан. Проверьте вывод Vivado выше."
+    exit 1
+fi
 
 # 3. Запускаем сборку
 echo "=== Запуск сборки битстрима ==="
-vivado -mode batch -source ../build.tcl -notrace
+vivado -mode batch -notrace -source ../build.tcl
 
-echo "=== Готово! Битстрим здесь: $BUILD_DIR/otladka_urr/otladka_urr.runs/impl_1/ ==="
+# Проверяем, создался ли битстрим (верхний модуль у вас urr, значит файл urr.bit)
+if [ ! -f "otladka_urr/otladka_urr.runs/impl_1/urr.bit" ]; then
+    echo "ОШИБКА: Битстрим не был создан. Проверьте логи сборки."
+    exit 1
+fi
+
+echo "=== Готово! Битстрим здесь: $BUILD_DIR/otladka_urr/otladka_urr.runs/impl_1/urr.bit===" 

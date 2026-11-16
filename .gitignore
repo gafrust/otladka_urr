@@ -1,4 +1,4 @@
-# Игнорируем папки, которые Vivado генерирует заново
+# Служебные папки Vivado
 otladka_urr.cache/
 otladka_urr.gen/
 otladka_urr.hw/
@@ -6,8 +6,9 @@ otladka_urr.ioplanning/
 otladka_urr.ip_user_files/
 otladka_urr.runs/
 otladka_urr.sim/
+otladka_urr.srcs/           # ← теперь игнорируем целиком
 
-# Игнорируем системный мусор Vivado
+# Системный мусор
 *.jou
 *.log
 *.str
@@ -15,5 +16,5 @@ otladka_urr.sim/
 *.pb
 .Xil/
 
-# Игнорируем папку для сборки
+# Папка для сборки
 build/
