@@ -6,7 +6,7 @@ otladka_urr.ioplanning/
 otladka_urr.ip_user_files/
 otladka_urr.runs/
 otladka_urr.sim/
-otladka_urr.srcs/           # ← теперь игнорируем целиком
+otladka_urr.srcs/         
 
 # Системный мусор
 *.jou
